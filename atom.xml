@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lukezp.github.io/"/>
-  <updated>2018-02-12T17:40:38.738Z</updated>
+  <updated>2018-02-13T04:18:42.620Z</updated>
   <id>https://lukezp.github.io/</id>
   
   <author>
@@ -17,20 +17,19 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>VPNClient工具</title>
-    <link href="https://lukezp.github.io/2018/02/12/VPNClient/"/>
-    <id>https://lukezp.github.io/2018/02/12/VPNClient/</id>
+    <title>RomeVPN工具</title>
+    <link href="https://lukezp.github.io/2018/02/12/RomeVPN/"/>
+    <id>https://lukezp.github.io/2018/02/12/RomeVPN/</id>
     <published>2018-02-12T15:46:57.000Z</published>
-    <updated>2018-02-12T17:40:38.738Z</updated>
+    <updated>2018-02-13T04:18:42.620Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>​    本软件是一款VPN工具，软件本身不提供任何VPN服务。</p><p>​    在使用window操作系统建立VPN时，配置过程比较繁琐；在连接到VPN后，所有的网络流量都会经过VPN，一方面服务端会增加带宽，另一方面使用者不能直接同时使用内外网。在这种情况下诞生了该软件，尽管市面上已经有很多同类软件，更多的是网络加速器软件，个人不能自由的配置。开发该软件的目的是简化建立VPN的工作、简化VPN提供商的工作，并为其提供灵活可靠的路由配置。使用者只需在配置文件中添加VPN地址列表和路由列表。用户可以在软件上的VPN列表中选择一个，然后进行连接，只有匹配到配置文件中的路由才会走VPN代理，而其它的走正常的网络。</p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>​    在配置文件VPNClient.exe.Config中有两个配置如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">addrUrl：VPN地址列表的URL</span><br><span class="line">routeUrl：路由列表的URL</span><br></pre></td></tr></table></figure><h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><blockquote><p>​    # 注释符<br>​    每一行以/r/n作为符号结束。</p></blockquote><h3 id="VPN地址列表文件"><a href="#VPN地址列表文件" class="headerlink" title="VPN地址列表文件"></a>VPN地址列表文件</h3><p>​    <code>名称||连接类型|IP地址|IP端口|日期||用户名|密码</code></p><h3 id="路由列表文件"><a href="#路由列表文件" class="headerlink" title="路由列表文件"></a>路由列表文件</h3><p>​    <code>ip|mask</code></p><h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">软件必须经过本人允许才可用于商业用途。</span><br><span class="line">请勿用于非法用途，不得违反中华人民共和国的法律法规，由此产生的法律纠纷与本人无关。</span><br></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>​      VPN是虚拟专用网络（Virtual Private Network）的简称，功能是：在公用网络上建立专用网络，进行加密通讯。在企业网络中有广泛应用。VPN网关通过对数据包的加密和数据包目标地址的转换实现远程访问。例如某公司员工出差到外地，只要能上互联网就能利用VPN访问内网资源。就像一句罗马谚语：“条条大路通罗马”原话是“All Roads Lead to Rome”。因此起名为RomeVPN。</p><p>​         <strong>本软件是一款VPN工具，软件本身不内置任何VPN服务。</strong></p><p>​    在使用window操作系统建立VPN时，配置过程比较繁琐；在连接到VPN后，所有的网络流量都会经过VPN，一方面服务端会增加带宽，另一方面使用者不能直接同时使用内外网。在这种情况下诞生了该软件，尽管市面上已经有很多同类软件，更多的是网络加速器软件，个人不能自由的配置。开发该软件的目的是简化建立VPN的工作、简化VPN提供商的工作，并为其提供灵活可靠的路由配置。使用者只需在配置文件中添加VPN地址列表和路由列表。用户可以在软件上的VPN列表中选择一个，然后进行连接，只有匹配到配置文件中的路由才会走VPN代理，而其它的走正常的网络。</p><h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>​    在配置文件VPNClient.exe.Config中有两个配置如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">addrUrl：VPN地址列表的URL</span><br><span class="line">routeUrl：路由列表的URL</span><br></pre></td></tr></table></figure><h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><blockquote><p>​    # 注释符<br>​    每一行以/r/n作为符号结束。</p></blockquote><h3 id="VPN地址列表文件"><a href="#VPN地址列表文件" class="headerlink" title="VPN地址列表文件"></a>VPN地址列表文件</h3><p>​    <code>名称||连接类型|IP地址|IP端口|日期||用户名|密码</code></p><h3 id="路由列表文件"><a href="#路由列表文件" class="headerlink" title="路由列表文件"></a>路由列表文件</h3><p>​    <code>ip|mask</code></p><h2 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">软件必须经过本人允许才可用于商业用途。</span><br><span class="line">请勿用于非法用途，不得违反中华人民共和国的法律法规，由此产生的法律纠纷与本人无关。</span><br></pre></td></tr></table></figure><h2 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h2><p><a href="https://github.com/lukezp/RomeVPN/releases/download/V1.0.0/RomeVPN.zip" target="_blank" rel="noopener">RomeVPN</a></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;​    本软件是一款VPN工具，软件本身不提供任何VPN服务。&lt;/p&gt;
-&lt;p&gt;​    在使用window操作系统建立VPN时，配置过程比
+        &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;​      VPN是虚拟专用网络（Virtual Private Network）的简称，功能是：在公用网络上建立专用网络，进行加密通讯。
       
     
     </summary>
