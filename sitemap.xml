@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://lukezp.github.io/about/index.html</loc>
+    
+    <lastmod>2018-03-03T10:32:43.092Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://lukezp.github.io/2018/02/12/RomeVPN/</loc>
     
-    <lastmod>2018-02-24T10:56:25.441Z</lastmod>
+    <lastmod>2018-02-24T15:39:37.421Z</lastmod>
     
   </url>
   
@@ -19,13 +26,6 @@
     <loc>https://lukezp.github.io/tags/index.html</loc>
     
     <lastmod>2018-02-12T15:23:41.135Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lukezp.github.io/about/index.html</loc>
-    
-    <lastmod>2018-02-12T15:23:19.305Z</lastmod>
     
   </url>
   
