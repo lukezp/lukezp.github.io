@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="tools,ssh," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lukezp'Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="SSH登录认证过程详解 介绍SSH的功能及特性，然后通过python实现简易SSH客户端，理解会话建立的过程  功能 远程控制 为通信提供安全通道  ftp、pop和telnet在本质上都是不安全的，因为它们在网络上用明文传送口令和数据，且容易受到中间人攻击。SSH通过加密解决这些问题，其传输的数据是经过压缩的，可以加快传输的速度。SSH有很多功能，它既可以代替Telnet，又可以为FTP、PoP">
+<meta name="keywords" content="tools,ssh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH登陆认证过程详解">
+<meta property="og:url" content="https://lukezp.github.io/2018/04/14/SSH登陆认证过程详解/index.html">
+<meta property="og:site_name" content="Lukezp&#39;Blog">
+<meta property="og:description" content="SSH登录认证过程详解 介绍SSH的功能及特性，然后通过python实现简易SSH客户端，理解会话建立的过程  功能 远程控制 为通信提供安全通道  ftp、pop和telnet在本质上都是不安全的，因为它们在网络上用明文传送口令和数据，且容易受到中间人攻击。SSH通过加密解决这些问题，其传输的数据是经过压缩的，可以加快传输的速度。SSH有很多功能，它既可以代替Telnet，又可以为FTP、PoP">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-29T08:19:03.392Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SSH登陆认证过程详解">
+<meta name="twitter:description" content="SSH登录认证过程详解 介绍SSH的功能及特性，然后通过python实现简易SSH客户端，理解会话建立的过程  功能 远程控制 为通信提供安全通道  ftp、pop和telnet在本质上都是不安全的，因为它们在网络上用明文传送口令和数据，且容易受到中间人攻击。SSH通过加密解决这些问题，其传输的数据是经过压缩的，可以加快传输的速度。SSH有很多功能，它既可以代替Telnet，又可以为FTP、PoP">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://lukezp.github.io/2018/04/14/SSH登陆认证过程详解/"/>
+
+
+
+
+
+  <title>SSH登陆认证过程详解 | Lukezp'Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+<script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js">
+</script>
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+     
+<a style="display: none;" href="https://github.com/lukezp"><img style="position: absolute; top: 0; right: 0; border: 0;z-index: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lukezp'Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://lukezp.github.io/2018/04/14/SSH登陆认证过程详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="lukezp">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lukezp'Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SSH登陆认证过程详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T12:19:05+08:00">
+                2018-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/protocol/" itemprop="url" rel="index">
+                    <span itemprop="name">protocol</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                  <span class="post-meta-divider">|</span>
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,711
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="SSH登录认证过程详解"><a href="#SSH登录认证过程详解" class="headerlink" title="SSH登录认证过程详解"></a>SSH登录认证过程详解</h1><blockquote>
+<p>介绍SSH的功能及特性，然后通过python实现简易SSH客户端，理解会话建立的过程</p>
+</blockquote>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
+<li>远程控制</li>
+<li>为通信提供安全通道</li>
+</ul>
+<p>ftp、pop和telnet在本质上都是不安全的，因为它们在网络上用明文传送口令和数据，且容易受到中间人攻击。SSH通过加密解决这些问题，其传输的数据是经过压缩的，可以加快传输的速度。SSH有很多功能，它既可以代替Telnet，又可以为FTP、PoP、甚至为PPP提供一个安全的”通道”。</p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><ul>
+<li>基于账号和口令</li>
+<li>基于公钥和私钥（更为安全）</li>
+</ul>
+<h1 id="登录认证流程详细"><a href="#登录认证流程详细" class="headerlink" title="登录认证流程详细"></a>登录认证流程详细</h1><h3 id="5个阶段"><a href="#5个阶段" class="headerlink" title="5个阶段"></a>5个阶段</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 版本号协商阶段</span><br><span class="line">2. 密钥和算法协商阶段</span><br><span class="line">3. 认证阶段</span><br><span class="line">4. 会话请求阶段</span><br><span class="line">5. 会话交互阶段</span><br></pre></td></tr></table></figure>
+<h3 id="版本号协商阶段"><a href="#版本号协商阶段" class="headerlink" title="版本号协商阶段"></a>版本号协商阶段</h3><ol>
+<li><p>服务端打开端口22，等待客户连接。</p>
+</li>
+<li><p>客户端向服务端发起TCP连接，双方完成握手并建立连接；</p>
+</li>
+<li><p>服务端向客户端发送第一个报文，包括版本标志字符串，格式为 “SSH - &lt;主协议版本号&gt;.&lt;次协议版本号&gt; - &lt;软件版本号&gt;”，协议版本号由主版本号和次版本号组成，软件版本号主要是为调试使用。</p>
+</li>
+<li><p>客户端收到报文后，解析协议版本号，如果服务端的协议版本号比自己的低，且客户端能支持服务端的低版本，就使用服务端的协议号，否则使用自己的协议版本号。</p>
+</li>
+<li><p>客户端回复服务端一个报文，包含了客户端决定使用的协议版本号。</p>
+</li>
+<li><p>服务端比较客户端发过来的版本号，决定是否能同客户端交互。</p>
+</li>
+<li><p>如果协商成功，就进入密钥和算法协商阶段。否则服务端断开TCP连接。</p>
+<blockquote>
+<p>Note： 版本号协商阶段报文都是采用明文方式传输的。</p>
+</blockquote>
+</li>
+</ol>
+<h3 id="密钥和算法协商阶段"><a href="#密钥和算法协商阶段" class="headerlink" title="密钥和算法协商阶段"></a>密钥和算法协商阶段</h3><blockquote>
+<p>服务端和客户端分别发送算法协商报文给对方，报文中包含自己支持的公钥算法列表、加密算法列表、消息验证码算法列表、压缩算法列表等。 服务端和客户端根据对方和自己支持的算法得出最终使用的算法。 服务端和客户端利用DH交换算法、主机密钥对等参数，生成会话密钥和会话ID。</p>
+</blockquote>
+<p><em>s=server</em></p>
+<ol>
+<li>服务端将 s公 发送给客户端。</li>
+<li>服务端生成会话ID ，设为 id ，发送给客户端。</li>
+<li>客户端生成会话密钥，设为 key ，并计算 res = id 异或 key。</li>
+<li>客户端将 res 用 s公 进行加密，将结果发送给服务端。</li>
+<li>服务端用 s密 进行解密，得到 res。</li>
+<li>服务器计算 res 异或 id，得到 key。</li>
+<li>至此服务端和客户端都知道了会话密钥和会话ID，以后的数据传输都使用会话密钥进行加密和解密。</li>
+</ol>
+<h3 id="认证阶段"><a href="#认证阶段" class="headerlink" title="认证阶段"></a>认证阶段</h3><h4 id="基于账号和口令的验证方式"><a href="#基于账号和口令的验证方式" class="headerlink" title="基于账号和口令的验证方式"></a>基于账号和口令的验证方式</h4><ol>
+<li>客户端使用密钥和算法协商阶段生成的会话密钥加密账号、认证方法、口令，将结果发送给服务器。</li>
+<li>服务端使用获得的会话密钥解密报文，得到账号和口令。</li>
+<li>服务端对这个账号和口令进行判断，如果失败，向客户端发送认证失败报文，其中包含了可以再次认证的方法列表。</li>
+<li>客户端从认证方法列表中选择一种方法进行再次认证。</li>
+<li>这个过程反复进行，直到认证成功或者认证次数达到上限，服务端关闭本次TCP连接。</li>
+</ol>
+<h4 id="基于公钥和私钥的验证方式"><a href="#基于公钥和私钥的验证方式" class="headerlink" title="基于公钥和私钥的验证方式"></a>基于公钥和私钥的验证方式</h4><ol>
+<li>使用ssh-keygen程序生成公钥 id_dsa.pub 和私钥 id_dsa，一般是在客户端上生成，然后把 id_dsa.pub 通过某种方式发送给服务端。</li>
+<li>服务端放在将要远程登录过来的那个账号的公钥放在.ssh目录下面。</li>
+<li>客户端使用密钥和算法协商阶段生成的会话密钥加密账号、认证方法、id_dsa.pub，将结果发送给服务端。</li>
+<li>服务端使用会话密钥解密报文，得到账号、id_dsa.pub。 服务端在这个账号的目录的.ssh目录下找对应的公钥，如果没有找到，发送失败消息给客户端，如果找到，比较客户发送过来的这个公钥和找到的公钥，如果内容相同，服务端生成一个随机的字符串，简称“质询”，然后使用找到的公钥加密这个质询，然后使用会话密钥再次加密。</li>
+<li>服务端把这个双重加密的数据发送给客户端。</li>
+<li>客户端使用会话密钥解密报文，然后使用id_dsa再次解密数据，得到质询。</li>
+<li>客户端使用会话密钥加密质询，发送给服务端。</li>
+<li>服务端使用会话密钥解密报文，得到质询，判断是不是自己生成的那个质询，如果不相同，发送失败消息给客户端，如果相同，认证通过。</li>
+</ol>
+<h3 id="会话请求阶段"><a href="#会话请求阶段" class="headerlink" title="会话请求阶段"></a>会话请求阶段</h3><ol>
+<li>服务器等待客户端的请求；</li>
+<li>认证通过后，客户端向服务器发送会话请求；</li>
+<li>服务器处理客户端的请求。请求被成功处理后， 服务器会向客户端回应 SSH_SMSG_SUCCESS包，SSH进入交互会话阶段；否则回应 SSH_SMSG_FAILURE包，表示服务器处理请求失败或者不能识别请求。</li>
+</ol>
+<h3 id="交互会话阶段"><a href="#交互会话阶段" class="headerlink" title="交互会话阶段"></a>交互会话阶段</h3><p>在这个模式下，数据被双向传送：</p>
+<p>  　　1. 客户端将要执行的命令加密后传给服务器;<br>  　　2. 服务器接收到报文，解密后执行该命令,将执行的结果加密发还给客户端;<br>  　　3. 客户端将接收到的结果解密后显示到终端上.</p>
+<h1 id="Python实现简易SSH客户端"><a href="#Python实现简易SSH客户端" class="headerlink" title="Python实现简易SSH客户端"></a>Python实现简易SSH客户端</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> paramiko</span><br><span class="line"></span><br><span class="line"><span class="comment">#功能：连接到linux的ssh服务器并执行一条命令</span></span><br><span class="line"><span class="comment">#认证方式使用帐号密码</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ssh_cmd</span><span class="params">(ip, user, passwd, command)</span>:</span></span><br><span class="line">    <span class="comment">#创建客户端对象</span></span><br><span class="line">    client = paramiko.SSHClient()</span><br><span class="line">    <span class="comment">#保存目标服务器的SSH密钥</span></span><br><span class="line">    client.set_missing_host_key_policy(<span class="string">'/home/lukezp/.ssh/known_hosts'</span>)</span><br><span class="line">    <span class="comment"># 使用帐号密码方式认证</span></span><br><span class="line">    client.connect(ip, username=user, password=passwd)</span><br><span class="line">    ssh_session = client.get_transport().open_session()</span><br><span class="line">    <span class="keyword">if</span> ssh_session.active:</span><br><span class="line">        <span class="comment">#执行命令</span></span><br><span class="line">        ssh_session.exec_command(command)</span><br><span class="line">        print(ssh_session.recv(<span class="number">1024</span>))</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">  ssh_cmd(<span class="string">'192.168.47.131'</span>, <span class="string">'lukezp'</span>, <span class="string">'lukezp'</span>, <span class="string">'ls'</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h1><p>参照地址  <a href="https://www.cdxy.me/?p=394" target="_blank" rel="noopener">https://www.cdxy.me/?p=394</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果觉得文章对你有帮助，就打赏杯咖啡钱呗！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="lukezp 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    lukezp
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://lukezp.github.io/2018/04/14/SSH登陆认证过程详解/" title="SSH登陆认证过程详解">https://lukezp.github.io/2018/04/14/SSH登陆认证过程详解/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="external nofollow" target="_blank">署名-非商业性使用-禁止演绎 4.0 国际</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tools/" rel="tag"><i class="fa fa-tag"></i> tools</a>
+          
+            <a href="/tags/ssh/" rel="tag"><i class="fa fa-tag"></i> ssh</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div id="needsharebutton-postbottom">
+            <span class="btn">
+              <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </span>
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/30/在IDE中MAVEN提示错误/" rel="next" title="在IDE中MAVEN提示错误">
+                <i class="fa fa-chevron-left"></i> 在IDE中MAVEN提示错误
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/09/拨号上网错误代码详解/" rel="prev" title="拨号上网错误代码详解">
+                拨号上网错误代码详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDUxOS8xMTA1Nw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="lukezp" />
+            
+              <p class="site-author-name" itemprop="name">lukezp</p>
+              <p class="site-description motion-element" itemprop="description">笑看花开花落,淡看云卷云舒</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/lukezp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SSH登录认证过程详解"><span class="nav-number">1.</span> <span class="nav-text">SSH登录认证过程详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#功能"><span class="nav-number">1.1.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">1.2.</span> <span class="nav-text">验证</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#登录认证流程详细"><span class="nav-number">2.</span> <span class="nav-text">登录认证流程详细</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5个阶段"><span class="nav-number">2.0.1.</span> <span class="nav-text">5个阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本号协商阶段"><span class="nav-number">2.0.2.</span> <span class="nav-text">版本号协商阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#密钥和算法协商阶段"><span class="nav-number">2.0.3.</span> <span class="nav-text">密钥和算法协商阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#认证阶段"><span class="nav-number">2.0.4.</span> <span class="nav-text">认证阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于账号和口令的验证方式"><span class="nav-number">2.0.4.1.</span> <span class="nav-text">基于账号和口令的验证方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于公钥和私钥的验证方式"><span class="nav-number">2.0.4.2.</span> <span class="nav-text">基于公钥和私钥的验证方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话请求阶段"><span class="nav-number">2.0.5.</span> <span class="nav-text">会话请求阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交互会话阶段"><span class="nav-number">2.0.6.</span> <span class="nav-text">交互会话阶段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python实现简易SSH客户端"><span class="nav-number">3.</span> <span class="nav-text">Python实现简易SSH客户端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#引用"><span class="nav-number">4.</span> <span class="nav-text">引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">lukezp</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/needsharebutton/needsharebutton.css">
+
+  
+  
+  <script src="/lib/needsharebutton/needsharebutton.js"></script>
+
+  <script>
+    
+      pbOptions = {};
+      
+          pbOptions.iconStyle = "box";
+      
+          pbOptions.boxForm = "horizontal";
+      
+          pbOptions.position = "bottomCenter";
+      
+          pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Linkedin,Facebook,GooglePlus,GoogleBookmarks,Evernote";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
