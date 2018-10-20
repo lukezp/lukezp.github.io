@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="tools,git," />
+  <meta name="keywords" content="tools,maven,IDEA," />
 
 
 
@@ -88,18 +88,18 @@
 
 
 
-<meta name="description" content="在使用git过程中，会遇到使用多个ssh-key的情况，比如：github使用一个账号，gitee使用另一个账户。为了区分不同的ssh-key ，则创建多个密钥对文件。  生成github的ssh-key  ssh-keygen -t rsa -C “aaa@bbb.com” -f ~/.ssh/id_rsa-github  过程中会要求输入密码，直接回车为空即可。 此时会产生id_rsa-git">
-<meta name="keywords" content="tools,git">
+<meta name="description" content="在IDE中导入Maven项目时，代码中有时会提示找不到某某类，基本上除JDK外得第三方包都出现红色提示。IDEA有以下几种方法解决（Eclipse的处理方法类似）：  重新执行导入命令  选中项目根目录，右击 -&amp;gt; maven -&amp;gt; Reimport    清楚缓存并重启IDEA  File-&amp;gt;Invalidate Caches/Restart   重新建立索引库  Build,">
+<meta name="keywords" content="tools,maven,IDEA">
 <meta property="og:type" content="article">
-<meta property="og:title" content="配置多个git账户">
-<meta property="og:url" content="https://lukezp.github.io/2018/03/03/一台机器上配置多个git账户/index.html">
+<meta property="og:title" content="在IDE中MAVEN提示错误">
+<meta property="og:url" content="https://lukezp.github.io/2018/03/30/ide-solve-maven-error/index.html">
 <meta property="og:site_name" content="Lukezp&#39;Blog">
-<meta property="og:description" content="在使用git过程中，会遇到使用多个ssh-key的情况，比如：github使用一个账号，gitee使用另一个账户。为了区分不同的ssh-key ，则创建多个密钥对文件。  生成github的ssh-key  ssh-keygen -t rsa -C “aaa@bbb.com” -f ~/.ssh/id_rsa-github  过程中会要求输入密码，直接回车为空即可。 此时会产生id_rsa-git">
+<meta property="og:description" content="在IDE中导入Maven项目时，代码中有时会提示找不到某某类，基本上除JDK外得第三方包都出现红色提示。IDEA有以下几种方法解决（Eclipse的处理方法类似）：  重新执行导入命令  选中项目根目录，右击 -&amp;gt; maven -&amp;gt; Reimport    清楚缓存并重启IDEA  File-&amp;gt;Invalidate Caches/Restart   重新建立索引库  Build,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-09T07:25:31.226Z">
+<meta property="og:updated_time" content="2018-10-20T07:01:38.840Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="配置多个git账户">
-<meta name="twitter:description" content="在使用git过程中，会遇到使用多个ssh-key的情况，比如：github使用一个账号，gitee使用另一个账户。为了区分不同的ssh-key ，则创建多个密钥对文件。  生成github的ssh-key  ssh-keygen -t rsa -C “aaa@bbb.com” -f ~/.ssh/id_rsa-github  过程中会要求输入密码，直接回车为空即可。 此时会产生id_rsa-git">
+<meta name="twitter:title" content="在IDE中MAVEN提示错误">
+<meta name="twitter:description" content="在IDE中导入Maven项目时，代码中有时会提示找不到某某类，基本上除JDK外得第三方包都出现红色提示。IDEA有以下几种方法解决（Eclipse的处理方法类似）：  重新执行导入命令  选中项目根目录，右击 -&amp;gt; maven -&amp;gt; Reimport    清楚缓存并重启IDEA  File-&amp;gt;Invalidate Caches/Restart   重新建立索引库  Build,">
 
 
 
@@ -129,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://lukezp.github.io/2018/03/03/一台机器上配置多个git账户/"/>
+  <link rel="canonical" href="https://lukezp.github.io/2018/03/30/ide-solve-maven-error/"/>
 
 
 
 
 
-  <title>配置多个git账户 | Lukezp'Blog</title>
+  <title>在IDE中MAVEN提示错误 | Lukezp'Blog</title>
   
 
 
@@ -277,7 +277,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://lukezp.github.io/2018/03/03/一台机器上配置多个git账户/">
+    <link itemprop="mainEntityOfPage" href="https://lukezp.github.io/2018/03/30/ide-solve-maven-error/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="lukezp">
@@ -294,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">配置多个git账户</h1>
+          <h1 class="post-title" itemprop="name headline">在IDE中MAVEN提示错误</h1>
         
 
         <div class="post-meta">
@@ -306,8 +306,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-03T22:45:16+08:00">
-                2018-03-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T22:12:06+08:00">
+                2018-03-30
               </time>
             
 
@@ -329,19 +329,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tools/" itemprop="url" rel="index">
-                    <span itemprop="name">tools</span>
+                  <a href="/categories/IDE/" itemprop="url" rel="index">
+                    <span itemprop="name">IDE</span>
                   </a>
                 </span>
 
@@ -378,7 +367,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  389
+                  107
                 </span>
               
 
@@ -394,7 +383,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  2
+                  1
                 </span>
               
             </div>
@@ -415,40 +404,22 @@
       
 
       
-        <p>在使用git过程中，会遇到使用多个ssh-key的情况，比如：github使用一个账号，gitee使用另一个账户。为了区分不同的ssh-key ，则创建多个密钥对文件。</p>
+        <p>在IDE中导入Maven项目时，代码中有时会提示<code>找不到某某类</code>，基本上除JDK外得第三方包都出现红色提示。IDEA有以下几种方法解决（Eclipse的处理方法类似）：</p>
 <ol>
-<li><p>生成github的ssh-key</p>
+<li><p>重新执行导入命令</p>
 <blockquote>
-<p>ssh-keygen -t rsa -C “aaa@bbb.com” -f ~/.ssh/id_rsa-github</p>
-</blockquote>
-<p>过程中会要求输入密码，直接回车为空即可。</p>
-<p>此时会产生id_rsa-github和id_rsa-github.pub两个文件。</p>
-<p>如果不指定则默认文件id_rsa和id_rsa.pub。</p>
-</li>
-<li><p>同样的方式为gitee生成两个文件id_rsa-gitee和id_rsa-gitee.pub</p>
-</li>
-<li><p>默认情况下ssh-agent读取id_rsa，因此把添加到 ssh-agent 的高速缓存中。</p>
-<blockquote>
-<p>ssh-add ~/.ssh/id_rsa-github</p>
+<p>选中项目根目录，右击 -&gt; maven -&gt; Reimport </p>
 </blockquote>
 </li>
-<li><p>把公有粘贴到github或gitee的账户下即可。</p>
-</li>
-<li><p>在~/.ssh/目录下新建文件config，在里面指定不同的私钥对应的不同git服务器。</p>
-<p>github的配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host github.com</span><br><span class="line">  HostName github.com</span><br><span class="line">  PreferredAuthentications publickey</span><br><span class="line">  IdentityFile ~/.ssh/id_rsa-github</span><br></pre></td></tr></table></figure>
-<p>gitee的配置</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Host gitee.com</span><br><span class="line">  HostName gitee.com </span><br><span class="line">  PreferredAuthentications publickey </span><br><span class="line">  IdentityFile ~/.ssh/id-rsa-gitee</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>测试连接</p>
+<li><p>清楚缓存并重启IDEA</p>
 <blockquote>
-<p>ssh -T github.com<br>ssh -T gitee.com</p>
+<p>File-&gt;Invalidate Caches/Restart</p>
 </blockquote>
 </li>
-<li><p>查看配置信息</p>
-<p>git一般会根据配置文件的user.name和user.email来获取作者信息，如果使用不同账户信息的话，需要在使用前修改配置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查看配置信息</span><br><span class="line">git config --list </span><br><span class="line"># 设置全局的name和email</span><br><span class="line">git config --global user.name &quot;bbb&quot;</span><br><span class="line">git config --global user.email &quot;aaa@xxx.com&quot;</span><br><span class="line"># 设置团队项目的name和email，每次新创建一个项目，需要执行下</span><br><span class="line">git config --local user.name &quot;bbb&quot;</span><br><span class="line">git config --local user.email &quot;aaa@xxx.com&quot;</span><br></pre></td></tr></table></figure>
-<p>​</p>
+<li><p>重新建立索引库</p>
+<blockquote>
+<p>Build,Execution,Deployment -&gt; Build Tools -&gt; Maven -&gt; Repositories -&gt; Update</p>
+</blockquote>
 </li>
 </ol>
 
@@ -495,7 +466,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://lukezp.github.io/2018/03/03/一台机器上配置多个git账户/" title="配置多个git账户">https://lukezp.github.io/2018/03/03/一台机器上配置多个git账户/</a>
+    <a href="https://lukezp.github.io/2018/03/30/ide-solve-maven-error/" title="在IDE中MAVEN提示错误">https://lukezp.github.io/2018/03/30/ide-solve-maven-error/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -512,7 +483,9 @@
           
             <a href="/tags/tools/" rel="tag"><i class="fa fa-tag"></i> tools</a>
           
-            <a href="/tags/git/" rel="tag"><i class="fa fa-tag"></i> git</a>
+            <a href="/tags/maven/" rel="tag"><i class="fa fa-tag"></i> maven</a>
+          
+            <a href="/tags/IDEA/" rel="tag"><i class="fa fa-tag"></i> IDEA</a>
           
         </div>
       
@@ -540,8 +513,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/12/RomeVPN/" rel="next" title="RomeVPN工具">
-                <i class="fa fa-chevron-left"></i> RomeVPN工具
+              <a href="/2018/03/03/config-multi-git-accounts/" rel="next" title="配置多个git账户">
+                <i class="fa fa-chevron-left"></i> 配置多个git账户
               </a>
             
           </div>
@@ -550,8 +523,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/30/在IDE中MAVEN提示错误/" rel="prev" title="在IDE中MAVEN提示错误">
-                在IDE中MAVEN提示错误 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/14/ssh-login-auth-detail/" rel="prev" title="SSH登陆认证过程详解">
+                SSH登陆认证过程详解 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
