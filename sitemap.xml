@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://lukezp.github.io/2018/11/20/hexo-public-article-and-image/</loc>
+    
+    <lastmod>2018-11-21T03:58:19.307Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://lukezp.github.io/about/index.html</loc>
     
     <lastmod>2018-11-20T14:46:40.402Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>https://lukezp.github.io/2018/11/20/ios-web-page-debug/</loc>
     
     <lastmod>2018-11-20T14:20:30.060Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lukezp.github.io/2018/11/20/hexo-public-article-and-image/</loc>
-    
-    <lastmod>2018-11-20T08:12:34.000Z</lastmod>
     
   </url>
   
